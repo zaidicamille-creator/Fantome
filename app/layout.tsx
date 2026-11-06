@@ -1,20 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, DM_Sans } from "next/font/google";
 import "./globals.css";
-
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  weight: ["600", "800"],
-  variable: "--font-fraunces",
-  display: "swap",
-});
-
-const dmsans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-dmsans",
-  display: "swap",
-});
 
 const titre = "Fantômes — Débusque les abonnements que tu paies sans t'en servir";
 const description =
@@ -40,9 +25,22 @@ export const viewport: Viewport = {
   themeColor: "#F6F0E4",
 };
 
+const polices = {
+  "--font-fraunces": "'Fraunces'",
+  "--font-dmsans": "'DM Sans'",
+} as React.CSSProperties;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${fraunces.variable} ${dmsans.variable}`}>
+    <html lang="fr" style={polices}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600;800&display=swap"
+        />
+      </head>
       <body className="font-texte antialiased">{children}</body>
     </html>
   );
