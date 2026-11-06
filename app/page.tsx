@@ -16,7 +16,7 @@ const benefices = [
   {
     titre: "Tu vois tout, classé par coût annuel",
     texte:
-      "Un abonnement à 7 € par mois fait 84 € par an. Classés par montant sur l'année, les fantômes les plus chers sortent en premier.",
+      "Les fantômes les plus chers sortent en premier, calculés sur l'année entière et non sur un mois.",
   },
   {
     titre: "Tu résilies sans te prendre la tête",
@@ -32,44 +32,80 @@ const benefices = [
 
 export default function Accueil() {
   return (
-    <main className="mx-auto flex min-h-[100svh] max-w-xl flex-col px-5 pb-12 pt-6">
-      <header className="flex items-center gap-2">
-        <Fantome className="h-8 w-7" />
-        <span className="font-titre text-xl font-extrabold tracking-tight">Fantômes</span>
+    <main className="mx-auto flex min-h-[100svh] max-w-xl flex-col px-6 pb-14 pt-5">
+      <header className="flex items-center justify-between border-b border-encre/20 pb-4">
+        <div className="flex items-center gap-2">
+          <Fantome className="h-7 w-6" />
+          <span className="font-titre text-xl font-extrabold tracking-tight">Fantômes</span>
+        </div>
+        <span className="text-xs font-medium uppercase tracking-[0.18em] text-encre/60">
+          Charges fixes
+        </span>
       </header>
 
-      <section className="mt-10">
-        <h1 className="font-titre text-[2.6rem] font-extrabold leading-[1.05] tracking-tight">
+      <section className="mt-12">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-brule">
+          Relevé bancaire · 2 minutes
+        </p>
+        <h1 className="mt-4 font-titre text-[3.1rem] font-extrabold leading-[1.02] tracking-tight">
           Tu paies des abonnements que tu n&rsquo;utilises plus.
-          <span className="text-brule"> On les débusque.</span>
         </h1>
-        <p className="mt-5 text-lg leading-relaxed">
-          Un essai jamais résilié, un service remplacé, une option activée une fois.
-          Ces petits prélèvements coûtent souvent{" "}
-          <strong className="font-bold text-brule">plusieurs centaines d&rsquo;euros par an</strong>.
-          Ils sont trop petits pour qu&rsquo;on les remarque.
+        <p className="mt-4 font-titre text-[2.2rem] font-semibold leading-[1.05] text-brule">
+          On les débusque.
+        </p>
+        <p className="mt-8 text-lg leading-relaxed text-encre/90">
+          Un essai jamais résilié, un service remplacé, une option activée une
+          fois. Ces petits prélèvements s&rsquo;additionnent sans qu&rsquo;on les voie.
         </p>
 
         <a
           href="/commencer"
-          className="mt-8 flex w-full items-center justify-center rounded-2xl bg-brule px-6 py-5 text-lg font-bold text-creme shadow-[0_4px_0_0_#7c2a08] transition active:translate-y-[2px] active:shadow-[0_2px_0_0_#7c2a08]"
+          className="mt-8 flex w-full items-center justify-between bg-encre px-6 py-5 text-lg font-bold text-creme transition active:bg-brule"
         >
-          Commencer, c&rsquo;est gratuit
+          <span>Commencer, c&rsquo;est gratuit</span>
+          <span aria-hidden="true" className="text-2xl">→</span>
         </a>
-        <p className="mt-3 text-center text-sm text-encre/70">
-          3 questions, 2 minutes. Aucune carte bancaire demandée.
+        <p className="mt-3 text-sm text-encre/65">
+          3 questions, aucune carte bancaire demandée.
         </p>
       </section>
 
-      <section className="mt-14 space-y-4">
-        {benefices.map((b, i) => (
-          <article key={b.titre} className="rounded-2xl bg-creme2 p-5">
-            <p className="font-titre text-3xl font-extrabold text-brule">{i + 1}</p>
-            <h2 className="mt-1 font-titre text-xl font-semibold leading-snug">{b.titre}</h2>
-            <p className="mt-2 leading-relaxed text-encre/85">{b.texte}</p>
-          </article>
-        ))}
+      <section className="mt-14 border-y border-encre/20 py-8">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-encre/60">
+          Un exemple
+        </p>
+        <p className="mt-3 font-titre text-7xl font-extrabold leading-none text-brule">
+          84&nbsp;€
+        </p>
+        <p className="mt-3 text-lg leading-snug">
+          C&rsquo;est ce que coûte, sur une année, un abonnement à 7&nbsp;€ par
+          mois. Petit sur un relevé, mais pas sur douze mois.
+        </p>
       </section>
+
+      <section className="mt-4">
+        <ol>
+          {benefices.map((b, i) => (
+            <li key={b.titre} className="border-b border-encre/20 py-7">
+              <p className="font-titre text-xl font-extrabold text-brule">
+                {String(i + 1).padStart(2, "0")}
+              </p>
+              <h2 className="mt-1 font-titre text-2xl font-semibold leading-snug">
+                {b.titre}
+              </h2>
+              <p className="mt-2 leading-relaxed text-encre/85">{b.texte}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <a
+        href="/commencer"
+        className="mt-10 flex w-full items-center justify-between bg-encre px-6 py-5 text-lg font-bold text-creme transition active:bg-brule"
+      >
+        <span>Commencer, c&rsquo;est gratuit</span>
+        <span aria-hidden="true" className="text-2xl">→</span>
+      </a>
     </main>
   );
 }
