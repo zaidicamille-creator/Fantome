@@ -51,7 +51,7 @@ export default function Accueil() {
         </p>
 
         <a
-          href="#"
+          href="/commencer"
           className="mt-8 flex w-full items-center justify-center rounded-2xl bg-brule px-6 py-5 text-lg font-bold text-creme shadow-[0_4px_0_0_#7c2a08] transition active:translate-y-[2px] active:shadow-[0_2px_0_0_#7c2a08]"
         >
           Commencer, c&rsquo;est gratuit
