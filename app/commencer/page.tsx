@@ -24,7 +24,7 @@ export default function Commencer() {
       setErreur("");
       setFantomes(r.fantomes);
     } else if (r.raison === "rien") {
-      setErreur("Aucun prélèvement régulier trouvé. Il faut au moins 2 à 3 mois de relevé : essaie avec une période plus longue.");
+      setErreur("Bonne nouvelle : on n'a trouvé aucun prélèvement régulier suspect. Si ton relevé couvre moins de 3 mois, essaie avec une période plus longue.");
     } else {
       setErreur("On n'a pas réussi à lire ce fichier. Il faut un export CSV de ta banque, avec une colonne date, un libellé et un montant.");
     }
@@ -39,10 +39,14 @@ export default function Commencer() {
     }
     try {
       const texte = await lire(f);
+      if (texte.startsWith("%PDF")) {
+        setErreur("Ce fichier est un PDF. Il faut l'export CSV de ta banque, pas le relevé PDF.");
+        return;
+      }
       const r = detecter(texte);
       if (!r.ok && r.raison === "illisible") {
         const debut = texte.split(/\r?\n/).slice(0, 2).map(masque).join(" ⏎ ");
-        setErreur(`Fichier non lu (${texte.length} caractères). Début : ${debut}`);
+        setErreur(`Format non reconnu (${texte.length} caractères). Début : ${debut}`);
         return;
       }
       analyser(r);
