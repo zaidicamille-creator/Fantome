@@ -113,3 +113,172 @@ export default function Commencer() {
   const total = fantomes ? fantomes.reduce((s, f) => s + f.annuel, 0) : 0;
 
   return (
+    <main className="mx-auto flex min-h-[100svh] max-w-xl flex-col px-6 pb-10 pt-5">
+      <div className="flex items-center justify-between">
+        <a href="/" className="flex items-center gap-2">
+          <Fantome className="h-9 w-9" />
+          <span className="text-xl font-bold tracking-tight">Fantômes</span>
+        </a>
+        {!fini && (
+          <p className="text-sm text-encre/70">
+            Question {etape + 1} sur {questions.length}
+          </p>
+        )}
+      </div>
+
+      <div
+        className="mt-5 h-2 w-full overflow-hidden rounded-full bg-white/60"
+        role="progressbar"
+        aria-valuenow={progression}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
+        <div
+          className="h-full rounded-full bg-brule transition-all duration-300"
+          style={{ width: `${progression}%` }}
+        />
+      </div>
+
+      {!fini && (
+        <section className="mt-10 flex flex-1 flex-col">
+          <h1 className="text-[2.1rem] font-bold leading-[1.1] tracking-tight">
+            {questions[etape].titre}
+          </h1>
+          <div className="mt-8 space-y-3">
+            {questions[etape].options.map((o, i) => (
+              <button
+                key={o}
+                onClick={() => choisir(i)}
+                className="flex w-full items-center rounded-full bg-white/75 px-7 py-5 text-left text-lg font-medium transition active:bg-brule active:text-white"
+              >
+                {o}
+              </button>
+            ))}
+          </div>
+          {etape > 0 && (
+            <button onClick={retour} className="mt-6 self-start text-sm text-encre/70 underline">
+              Revenir à la question précédente
+            </button>
+          )}
+        </section>
+      )}
+
+      {fini && !fantomes && (
+        <section className="mt-10">
+          <p className="text-lg">D&rsquo;après tes réponses, tu paies environ</p>
+          <p className="mt-2 text-7xl font-bold leading-none tracking-tight text-brule">
+            {euros(estimation)}
+          </p>
+          <p className="mt-3 text-lg">
+            par an en abonnements, soit {euros(mensuel)} par mois.
+          </p>
+
+          <div className="mt-6 rounded-[2rem] bg-white/70 p-5 leading-relaxed">
+            <p>
+              Tu as indiqué que tu as{" "}
+              <strong>{questions[0].options[reponses[0]].toLowerCase()}</strong> abonnements et
+              que ta dernière vérification date de :{" "}
+              <strong>{questions[2].options[reponses[2]].toLowerCase()}</strong>.
+            </p>
+            <p className="mt-3 text-sm text-encre/70">
+              Ce chiffre est une estimation basée sur tes réponses. Ton relevé donnera le montant
+              réel.
+            </p>
+          </div>
+
+          <label className="mt-8 flex w-full cursor-pointer items-center justify-between rounded-full bg-encre px-7 py-5 text-lg font-bold text-creme shadow-[0_6px_0_0_#8a3a12] active:translate-y-[2px] active:shadow-[0_3px_0_0_#8a3a12]">
+            <span>Déposer mon relevé (CSV)</span>
+            <span aria-hidden="true" className="text-2xl">↑</span>
+            <input
+              type="file"
+              accept=".csv,.txt,text/csv,text/plain,application/vnd.ms-excel"
+              onChange={surFichier}
+              className="sr-only"
+            />
+          </label>
+
+          {erreur && (
+            <p role="alert" className="mt-4 rounded-2xl bg-white/80 p-4 text-sm leading-relaxed">
+              {erreur}
+            </p>
+          )}
+
+          <button
+            onClick={() => analyser(detecter(exemple()))}
+            className="mt-5 w-full text-center text-base font-medium underline"
+          >
+            Pas de relevé sous la main ? Essayer avec un exemple
+          </button>
+          <p className="mt-4 text-center text-sm text-encre/70">
+            Ton fichier est lu sur ton téléphone. Il n&rsquo;est envoyé nulle part.
+          </p>
+        </section>
+      )}
+
+      {fantomes && (
+        <section className="mt-10">
+          <p className="text-lg">
+            {fantomes.length} fantôme{fantomes.length > 1 ? "s" : ""} trouvé
+            {fantomes.length > 1 ? "s" : ""}, qui te coûtent
+          </p>
+          <p className="mt-2 text-7xl font-bold leading-none tracking-tight text-brule">
+            {euros(total)}
+          </p>
+          <p className="mt-3 text-lg">par an, soit {euros(total / 12)} par mois.</p>
+          <p className="mt-3 text-sm text-encre/70">
+            Vérifie chaque ligne : certains prélèvements sont utiles (loyer, électricité,
+            assurance).
+          </p>
+
+          <ol className="mt-6 space-y-3">
+            {fantomes.map((f, i) => {
+              const verrouille = i >= GRATUITS;
+              return (
+                <li key={f.nom} className="rounded-[2rem] bg-white/75 p-5">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <h2
+                      className={`text-xl font-bold leading-snug ${verrouille ? "select-none blur-[6px]" : ""}`}
+                      aria-hidden={verrouille}
+                    >
+                      {f.nom}
+                    </h2>
+                    <p className="whitespace-nowrap text-2xl font-bold text-brule">
+                      {euros(f.annuel)}
+                      <span className="text-sm font-medium text-encre/70"> /an</span>
+                    </p>
+                  </div>
+                  <p className="mt-1 text-sm text-encre/70">
+                    {euros2(f.mensuel)} par mois · vu {f.fois} fois · dernier : {f.dernier}
+                  </p>
+                  {verrouille ? (
+                    <p className="mt-3 text-sm font-bold">Verrouillé : le nom et la lettre de résiliation</p>
+                  ) : (
+                    <p className="mt-3 text-sm font-bold text-encre/70">
+                      Lettre de résiliation : bientôt disponible
+                    </p>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+
+          <button
+            disabled
+            className="mt-8 flex w-full cursor-not-allowed items-center justify-center rounded-full bg-encre/40 px-7 py-5 text-lg font-bold text-white"
+          >
+            Débloquer ma liste complète (bientôt)
+          </button>
+          <button
+            onClick={() => {
+              setFantomes(null);
+              setErreur("");
+            }}
+            className="mt-5 w-full text-center text-sm underline"
+          >
+            Recommencer avec un autre fichier
+          </button>
+        </section>
+      )}
+    </main>
+  );
+}
