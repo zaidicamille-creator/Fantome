@@ -3,11 +3,12 @@
 @tailwind utilities;
 
 html {
-  background: #f6f0e4;
+  background: #ffe1cf;
   -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: #f6f0e4;
+  min-height: 100vh;
   color: #1b1a17;
+  background: linear-gradient(160deg, #ffe1cf 0%, #fbd0df 48%, #dcd6ff 100%) fixed;
 }
