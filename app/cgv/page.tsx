@@ -17,7 +17,7 @@ const sections = [
   {
     t: "3. Prix et paiement",
     p: [
-      "Prix : [À COMPLÉTER : prix TTC de chaque formule, par exemple 19 € TTC en paiement unique]. Les prix sont indiqués en euros, toutes taxes comprises. [À COMPLÉTER : mention de TVA applicable].",
+      "Prix : 9,99 € TTC en paiement unique pour la liste complète et les lettres. Un suivi mensuel optionnel est proposé à 4,99 € TTC par mois. Les prix sont indiqués en euros, toutes taxes comprises. [À COMPLÉTER : mention de TVA applicable].",
       "Le paiement est sécurisé et traité par Stripe. La commande est confirmée par un e-mail envoyé à l'adresse indiquée par le client.",
     ],
   },
@@ -35,13 +35,16 @@ const sections = [
   {
     t: "6. Garantie satisfait ou remboursé",
     p: [
-      "Pendant 30 jours à compter du paiement, le client peut demander le remboursement intégral, sans avoir à se justifier. Pour cela, il écrit à [À COMPLÉTER : adresse e-mail] en indiquant l'adresse e-mail utilisée pour payer.",
+      "Pendant 14 jours à compter du paiement, le client peut demander le remboursement intégral, sans avoir à se justifier. Pour cela, il écrit à [À COMPLÉTER : adresse e-mail] en indiquant l'adresse e-mail utilisée pour payer.",
       "Le vendeur rembourse sous 14 jours maximum, par le moyen de paiement utilisé lors de l'achat.",
     ],
   },
   {
-    t: "7. Formule mensuelle, le cas échéant",
-    p: ["[À COMPLÉTER : si une formule mensuelle est proposée, préciser qu'elle est sans engagement, comment la résilier à tout moment, et à partir de quand la résiliation prend effet.]"],
+    t: "7. Suivi mensuel (optionnel)",
+    p: [
+      "Le suivi mensuel est sans engagement et résiliable à tout moment, en écrivant à l'adresse e-mail indiquée ci-dessus. La résiliation prend effet à la fin de la période mensuelle déjà payée, sans nouveau prélèvement ensuite.",
+      "Il comprend : [À COMPLÉTER : ce que le suivi mensuel apporte concrètement].",
+    ],
   },
   {
     t: "8. Responsabilité",
