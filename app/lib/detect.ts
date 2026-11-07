@@ -72,6 +72,10 @@ function cle(libelle: string): string {
   return mots.slice(0, 2).join(" ");
 }
 
+function estVirement(libelle: string): boolean {
+  return /^(VIR|VIREMENT)\b/.test(sansAccents(libelle).toUpperCase().trim());
+}
+
 function joli(k: string): string {
   return k
     .toLowerCase()
@@ -149,7 +153,7 @@ export function lireOperations(texte: string): Operation[] {
       .filter((o) => !/^(VIR|VIREMENT|SALAIRE|REMISE)/i.test(sansAccents(o.libelle).trim()))
       .map((o) => ({ ...o, montant: -Math.abs(o.montant) }));
   }
-  return ops.filter((o) => o.montant < 0);
+  return ops.filter((o) => o.montant < 0 && !estVirement(o.libelle));
 }
 
 export function detecter(texte: string): Resultat {
@@ -192,4 +196,4 @@ export function detecter(texte: string): Resultat {
   if (!fantomes.length) return { ok: false, raison: "rien" };
   fantomes.sort((a, b) => b.annuel - a.annuel);
   return { ok: true, fantomes, lignes: ops.length };
-      }
+}
