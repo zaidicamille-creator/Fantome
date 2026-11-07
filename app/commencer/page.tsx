@@ -8,6 +8,8 @@ import Questions from "./Questions";
 import Depot from "./Depot";
 import Liste from "./Liste";
 
+const masque = (l: string) => l.replace(/\d/g, "9").slice(0, 160);
+
 export default function Commencer() {
   const [etape, setEtape] = useState(0);
   const [reponses, setReponses] = useState<number[]>([]);
@@ -36,7 +38,14 @@ export default function Commencer() {
       return;
     }
     try {
-      analyser(detecter(await lire(f)));
+      const texte = await lire(f);
+      const r = detecter(texte);
+      if (!r.ok && r.raison === "illisible") {
+        const debut = texte.split(/\r?\n/).slice(0, 2).map(masque).join(" ⏎ ");
+        setErreur(`Fichier non lu (${texte.length} caractères). Début : ${debut}`);
+        return;
+      }
+      analyser(r);
     } catch {
       setErreur("Ce fichier n'a pas pu être ouvert. Réessaie, ou choisis un autre export.");
     }
