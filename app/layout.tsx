@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#F6F0E4",
+  themeColor: "#FFE1CF",
 };
 
 const polices = {
@@ -41,7 +41,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600;800&display=swap"
         />
       </head>
-      <body className="font-texte antialiased">{children}</body>
+      <body className="font-texte antialiased">
+        {children}
+        <footer className="mx-auto max-w-xl px-6 pb-10 pt-4 text-center text-sm text-encre/70">
+          <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2">
+            <a href="/mentions-legales" className="underline">
+              Mentions légales
+            </a>
+            <a href="/cgv" className="underline">
+              CGV
+            </a>
+            <a href="/confidentialite" className="underline">
+              Confidentialité
+            </a>
+          </nav>
+          <p className="mt-3">© Fantômes</p>
+        </footer>
+      </body>
     </html>
   );
 }
