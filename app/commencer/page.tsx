@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Fantome from "../lib/Fantome";
-import { detecter, type Fantome as Prelevement, type Resultat } from "../lib/detect";
+import { detecter, lireOperations, type Fantome as Prelevement, type Resultat } from "../lib/detect";
 import { questions, exemple, lire } from "../lib/outils";
 import Questions from "./Questions";
 import Depot from "./Depot";
 import Liste from "./Liste";
+import Apercu from "./Apercu";
 
 const masque = (l: string) => l.replace(/\d/g, "9").slice(0, 160);
 
@@ -15,6 +16,7 @@ export default function Commencer() {
   const [reponses, setReponses] = useState<number[]>([]);
   const [fantomes, setFantomes] = useState<Prelevement[] | null>(null);
   const [erreur, setErreur] = useState("");
+  const [apercu, setApercu] = useState("");
 
   const fini = etape >= questions.length;
   const progression = fantomes ? 100 : Math.round((Math.min(etape, questions.length) / questions.length) * 100);
@@ -43,10 +45,12 @@ export default function Commencer() {
         setErreur("Ce fichier est un PDF. Il faut l'export CSV de ta banque, pas le relevé PDF.");
         return;
       }
+      const debut = texte.split(/\r?\n/).slice(0, 2).map(masque).join("\n");
+      const op = lireOperations(texte)[0];
+      setApercu(debut + (op ? `\n1re opération lue : ${masque(op.libelle)} | montant ${op.montant}` : ""));
       const r = detecter(texte);
       if (!r.ok && r.raison === "illisible") {
-        const debut = texte.split(/\r?\n/).slice(0, 2).map(masque).join(" ⏎ ");
-        setErreur(`Format non reconnu (${texte.length} caractères). Début : ${debut}`);
+        setErreur(`Format non reconnu (${texte.length} caractères). Début : ${debut.replace("\n", " ⏎ ")}`);
         return;
       }
       analyser(r);
@@ -98,18 +102,24 @@ export default function Commencer() {
           reponses={reponses}
           erreur={erreur}
           surFichier={surFichier}
-          surExemple={() => analyser(detecter(exemple()))}
+          surExemple={() => {
+            setApercu("");
+            analyser(detecter(exemple()));
+          }}
         />
       )}
 
       {fantomes && (
-        <Liste
-          fantomes={fantomes}
-          recommencer={() => {
-            setFantomes(null);
-            setErreur("");
-          }}
-        />
+        <>
+          <Liste
+            fantomes={fantomes}
+            recommencer={() => {
+              setFantomes(null);
+              setErreur("");
+            }}
+          />
+          {apercu && <Apercu texte={apercu} />}
+        </>
       )}
     </main>
   );
