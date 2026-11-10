@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Fantome as Prelevement } from "../lib/detect";
 import { euros, euros2 } from "../lib/outils";
+import { garder } from "../lib/panier";
 import Lettre from "./Lettre";
 
 const GRATUITS = 2;
@@ -93,10 +94,13 @@ export default function Liste({
       </ol>
 
       <button
-        disabled
-        className="mt-8 flex w-full cursor-not-allowed items-center justify-center rounded-full bg-encre/40 px-7 py-5 text-lg font-bold text-white"
+        onClick={() => {
+          garder(fantomes);
+          window.location.href = "/paiement";
+        }}
+        className="mt-8 flex w-full items-center justify-center rounded-full bg-encre px-7 py-5 text-lg font-bold text-creme shadow-[0_6px_0_#9a3412]"
       >
-        Débloquer ma liste complète (bientôt)
+        Débloquer ma liste complète
       </button>
       <button onClick={recommencer} className="mt-5 w-full text-center text-sm underline">
         Recommencer avec un autre fichier
